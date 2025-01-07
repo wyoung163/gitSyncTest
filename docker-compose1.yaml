@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  server:
+    image: cloudwave:ubuntu.dig.v1
+    build:
+      dockerfile: ./Dockerfile
+    entrypoint: /bin/bash
+    command:
+      - -c
+      - sleep infinity
+  web_app:
+    image: nginx:latest
+    deploy:
+      replicas: 3
+    expose: 
+      - 80
+

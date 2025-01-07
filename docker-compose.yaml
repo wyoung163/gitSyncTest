@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  ide:
+    image: choiwyoung/cloudwave:practice.v2
+    working_dir: /code
+    #environment:
+    #  - FILE__PASSWORD=/run/secrets/code-server-password
+    ports:
+      - 8443:8443
+    secrets:
+      - code-server-password
+    volumes:
+      - local_code:/code/local
+      - remote_code:/code/remote
+      - /var/run/docker.sock:/var/local/docker.sock
+    # depends_on:
+    #   GitSync:
+    #     #condition: service_completed_successfully
+    #     condition: service_started
+  # GitSync:
+  #   image: registry.k8s.io/git-sync/git-sync:v4.1.0
+  #   volumes:
+  #     - remote_code:/tmp
+  #   environment:
+  #     #- GITSYNC_REPO=https://github.com/matenduel/cloudwave
+  #     - GITSYNC_REPO=https://github.com/wyoung163/gitSyncTest
+  #     - GITSYNC_ROOT=/tmp/git
+  #     - GITSYNC_REF=main
+  #     - GITSYNC_DEPTH=1
+  #     #- GITSYNC_ONE_TIME=1
+  #   profiles:
+  #     - init
+
+secrets:
+  code-server-password:
+    file: ./password.txt
+
+volumes:
+  local_code:
+    external: true
+    name: local_code
+  remote_code:
+    external: true
+    name: remote_code
